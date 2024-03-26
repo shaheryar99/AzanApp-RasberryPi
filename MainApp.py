@@ -4,7 +4,6 @@ import os
 import requests
 import time
 from playsound import playsound
-import multiprocessing
 import simpleaudio as sa
 
 # Midnight + 10 minutes to account for date change
