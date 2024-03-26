@@ -16,8 +16,8 @@ dummyTime2 = datetime.now().replace(hour=1, minute=5).strftime("%H:%M")
 
 reqParameters = {'latitude' : '51.049999', 'longitude' : '-114.066666', 'method' : '0'}
 
-# Populate timings the first time program is launched so it is not waiting for midnight
-def firstTime():
+# Populate timings
+def populateTimings():
         timeNow = datetime.now().strftime("%H:%M")
         dateToday = date.today()
         year = dateToday.year
@@ -34,19 +34,14 @@ def firstTime():
         dataParsed = getData.json()
         return dataParsed
 
-dataParsed = firstTime()
+dataParsed = populateTimings()
 
-wave_object = sa.WaveObject.from_wave_file("Azan.wav")
-print("Playing")
-
-play_object = wave_object.play()
-play_object.wait_done()
+azan = sa.WaveObject.from_wave_file("Azan.wav")
 
 while True:
     # Current Time
     timeNow = datetime.now().strftime("%H:%M")
 
-    # In the top most while loop
     timings = dataParsed['data']['timings']
 
     fajr = timings['Fajr']
@@ -63,17 +58,26 @@ while True:
     minusTwo = timedelta(minutes=2)
     magribtime = magribtime - minusTwo
 
-    #print(fajrtime.time(), zuhrtime.time(), magribtime.time())
+    print("Populated Timings -- ", "Fajr:", fajrtime.time(), "Zuhr:", zuhrtime.time(), "Magrib:", magribtime.time())
 
     if (timeNow == fajrtime):
-        print("Fajr Time")
+        print("Playing Azan for Fajr")
+        play_azan = azan.play()
+        play_azan.wait_done()
 
     elif (timeNow == zuhrtime):
-        dataParsed = firstTime()
-        print("TIME REACHED.")
+        print("Playing Azan for Zuhr")
+        play_azan = azan.play()
+        play_azan.wait_done()
 
     elif (timeNow == magribtime):
-        print("Got to second dummy time")
+        print("Playing Azan for Magrib")
+        play_azan = azan.play()
+        play_azan.wait_done()
+
+    elif (timeNow == midnight):
+        dataParsed = populateTimings()
+        print("Populated Timings:", fajrtime.time(), zuhrtime.time(), magribtime.time())
 
     time.sleep(60)
 
