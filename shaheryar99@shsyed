@@ -3,16 +3,15 @@ import json
 import os
 import requests
 import time
-#import simpleaudio as sa
-import pygame
+from playsound import playsound
+import simpleaudio as sa
 
 # Midnight + 10 minutes to account for date change
 midnight = datetime.now().replace(hour=00, minute=10).strftime("%H:%M")
 
-dummyTime = datetime.now().replace(hour=3, minute=51).strftime("%H:%M")
-dummyTime1 = datetime.now().replace(hour=3, minute=57).strftime("%H:%M")
+dummyTime = datetime.now().replace(hour=1, minute=3).strftime("%H:%M")
+dummyTime1 = datetime.now().replace(hour=1, minute=4).strftime("%H:%M")
 dummyTime2 = datetime.now().replace(hour=1, minute=5).strftime("%H:%M")
-
 
 reqParameters = {'latitude' : '51.049999', 'longitude' : '-114.066666', 'method' : '0'}
 
@@ -36,11 +35,7 @@ def populateTimings():
 
 dataParsed = populateTimings()
 
-#azan = sa.WaveObject.from_wave_file("Azan.wav")
-
-pygame.init()
-pygame.mixer.init()
-sound = pygame.mixer.Sound("Azan.wav")
+azan = sa.WaveObject.from_wave_file("Azan.wav")
 
 while True:
     # Current Time
@@ -53,49 +48,40 @@ while True:
     magrib = timings['Maghrib']
 
     fajrtime = datetime.strptime(fajr, '%H:%M')
-    addFive = timedelta(minutes=6)
+    addFive = timedelta(minutes=9)
     fajrtime = fajrtime + addFive
 
     zuhrtime = datetime.strptime(zuhr, '%H:%M')
 
     magribtime = datetime.strptime(magrib, '%H:%M')
-    minusTwo = timedelta(minutes=1)
+    minusTwo = timedelta(minutes=2)
     magribtime = magribtime - minusTwo
 
-    print(timeNow)
-    print("Populated Timings:", fajrtime.time(), zuhrtime.time(), magribtime.time())
+    print("Populated Timings -- ", "Fajr:", fajrtime.time(), "Zuhr:", zuhrtime.time(), "Magrib:", magribtime.time())
 
     if (timeNow == fajrtime):
         print("Playing Azan for Fajr")
-        #play_azan = azan.play()
-        #play_azan.wait_done()
-        sound.play()
+        play_azan = azan.play()
+        play_azan.wait_done()
 
     elif (timeNow == zuhrtime):
         print("Playing Azan for Zuhr")
-        #play_azan = azan.play()
-        #play_azan.wait_done()
-        sound.play()
+        play_azan = azan.play()
+        play_azan.wait_done()
 
     elif (timeNow == magribtime):
         print("Playing Azan for Magrib")
-        #play_azan = azan.play()
-        #play_azan.wait_done()
-        sound.play()
+        play_azan = azan.play()
+        play_azan.wait_done()
 
     elif (timeNow == midnight):
         dataParsed = populateTimings()
         print("Populated Timings:", fajrtime.time(), zuhrtime.time(), magribtime.time())
 
-    #elif (timeNow == dummyTime):
-        #play_azan = azan.play()
-        #play_azan.wait_done()
-         #sound.play()
-
-    #elif (timeNow == dummyTime1):
-        #play_azan = azan.play()
-        #play_azan.wait_done()
-        #sound.play()
+    elif (timeNow == timeNow):
+        print("Playing azan rn")
+        play_azan = azan.play()
+        play_azan.wait_done()
 
     time.sleep(60)
 
