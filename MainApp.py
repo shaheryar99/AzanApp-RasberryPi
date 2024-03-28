@@ -13,8 +13,9 @@ dummyTime = datetime.now().replace(hour=3, minute=51).strftime("%H:%M")
 dummyTime1 = datetime.now().replace(hour=3, minute=57).strftime("%H:%M")
 dummyTime2 = datetime.now().replace(hour=1, minute=5).strftime("%H:%M")
 
-
 reqParameters = {'latitude' : '51.049999', 'longitude' : '-114.066666', 'method' : '0'}
+
+#CHECK DIFFERENCE BETWEEN STRFTIME LINES 12,13 and 14, AND STRPTIME 56, 60, 62.
 
 # Populate timings
 def populateTimings():
@@ -62,22 +63,26 @@ while True:
     minusTwo = timedelta(minutes=1)
     magribtime = magribtime - minusTwo
 
-    print(timeNow)
-    print("Populated Timings:", fajrtime.time(), zuhrtime.time(), magribtime.time())
+    fajrTimeString = fajrtime.strftime("%H:%M")
+    zuhrTimeString = zuhrtime.strftime("%H:%M")
+    magribTimeString = magribtime.strftime("%H:%M")
 
-    if (timeNow == fajrtime):
+    print(timeNow)
+    print("Populated Timings:", fajrTimeString, zuhrTimeString, magribTimeString)
+
+    if (timeNow == fajrTimeString):
         print("Playing Azan for Fajr")
         #play_azan = azan.play()
         #play_azan.wait_done()
         sound.play()
 
-    elif (timeNow == zuhrtime):
+    elif (timeNow == zuhrTimeString):
         print("Playing Azan for Zuhr")
         #play_azan = azan.play()
         #play_azan.wait_done()
         sound.play()
 
-    elif (timeNow == magribtime):
+    elif (timeNow == magribTimeString):
         print("Playing Azan for Magrib")
         #play_azan = azan.play()
         #play_azan.wait_done()
@@ -85,7 +90,7 @@ while True:
 
     elif (timeNow == midnight):
         dataParsed = populateTimings()
-        print("Populated Timings:", fajrtime.time(), zuhrtime.time(), magribtime.time())
+        print("Populated Timings:", fajrTimeString, zuhrTimeString, magribTimeString)
 
     #elif (timeNow == dummyTime):
         #play_azan = azan.play()
